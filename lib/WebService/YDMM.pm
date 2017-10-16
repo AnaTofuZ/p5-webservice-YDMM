@@ -2,8 +2,61 @@ package WebService::YDMM;
 use 5.008001;
 use strict;
 use warnings;
+use utf8;
+
+use Carp qw/croak/;
+use URI;
+use HTTP::Tiny;
+use Encode;
+use JSON;
 
 our $VERSION = "0.01";
+
+
+sub new {
+    my ($class, %args) = @_;
+
+    for my $param (qw/affiliate_id api_id/){
+        unless (exists $args{$param}){
+            Carp::croak("missing mandatory parameter '$param'");
+        }
+    }
+
+    _validate_affiliate_id($args{affiliate_id});
+
+    my $self = {
+        affiliate_id => $args{affiliate_id},
+        api_id       => $args{api_id},
+        _base_url    => 'https://api.dmm.com/affiliate/v3',
+        agent        => $args{agent} || HTTP::Tiny->new( agent => "WebService::YDMM agent $VERSION" ),
+    };
+
+    return bless $self, $class;
+}
+
+sub _validat_list {
+    my ($self, $param) = @_;
+
+    return ;
+}
+
+sub _validate_affiliate_id {
+    my $account = shift;
+
+    unless ($account =~ m{9[0-9]{2}$}) {
+        Carp::croak("Postfix of affiliate_id is '900--999'");
+    }
+
+    return 1;
+}
+
+
+sub author {
+    my ($self,$args) = @_;
+
+    map { $self->_validat_list($_) } keys %$args;
+
+}
 
 
 
@@ -14,7 +67,7 @@ __END__
 
 =head1 NAME
 
-WebService::YDMM - It's new $module
+WebService::YDMM - It's yet another DMM sdk.
 
 =head1 SYNOPSIS
 
@@ -25,6 +78,8 @@ WebService::YDMM - It's new $module
 WebService::YDMM is ...
 
 =head1 LICENSE
+
+Origin WebService::DMM (C) syohex
 
 Copyright (C) AnaTofuZ.
 
