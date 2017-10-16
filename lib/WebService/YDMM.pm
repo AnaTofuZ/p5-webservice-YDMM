@@ -75,13 +75,17 @@ WebService::YDMM - It's yet another DMM sdk.
 
 =head1 DESCRIPTION
 
-WebService::YDMM is ...
+WebService::YDMM is another DMM webservice module.
+DMML<http://www.dmm.com> is Japanese shopping site.
+
+
+
 
 =head1 LICENSE
 
-Origin WebService::DMM (C) syohex
-
 Copyright (C) AnaTofuZ.
+
+Origin WebService::DMM (C) syohex
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.

@@ -1,5 +1,5 @@
 {
-   "abstract" : "It's new $module",
+   "abstract" : "It's yet another DMM sdk.",
    "author" : [
       "AnaTofuZ <anatofuz@gmail.com>"
    ],
@@ -52,6 +52,17 @@
       }
    },
    "release_status" : "unstable",
+   "resources" : {
+      "bugtracker" : {
+         "web" : "https://github.com/AnaTofuZ/p5-webservice-YDMM/issues"
+      },
+      "homepage" : "https://github.com/AnaTofuZ/p5-webservice-YDMM",
+      "repository" : {
+         "type" : "git",
+         "url" : "git://github.com/AnaTofuZ/p5-webservice-YDMM.git",
+         "web" : "https://github.com/AnaTofuZ/p5-webservice-YDMM"
+      }
+   },
    "version" : "0.01",
    "x_authority" : "cpan:ANATOFUZ",
    "x_serialization_backend" : "JSON::PP version 2.27300"
