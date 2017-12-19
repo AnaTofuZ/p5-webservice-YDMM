@@ -22,42 +22,50 @@ sub new {
         }
     }
 
+    my $agent = $args{agent} || "WebService::YDMM agent $VERSION";
+
     _validate_affiliate_id($args{affiliate_id});
 
     my $self = {
         affiliate_id => $args{affiliate_id},
         api_id       => $args{api_id},
-        _base_url    => 'https://api.dmm.com/affiliate/v3',
         agent        => $args{agent} || HTTP::Tiny->new( agent => "WebService::YDMM agent $VERSION" ),
+        _base_url    => 'https://api.dmm.com/affiliate/v3',
     };
 
     return bless $self, $class;
 }
 
-sub _validat_list {
-    my ($self, $param) = @_;
-
-    return ;
-}
 
 sub _validate_affiliate_id {
     my $account = shift;
 
     unless ($account =~ m{9[0-9]{2}$}) {
-        Carp::croak("Postfix of affiliate_id is '900--999'");
+        croak("Postfix of affiliate_id is '900--999'");
     }
 
-    return 1;
+    return;
 }
 
 
-sub author {
+sub item {
+    my ($self,%param) = @_;
+
+    my @validates = $self->_validate_list("item");
+
+    do {
+        delete $param{output};
+    }
+
+    return;
+}
+
+
+sub _get {
     my ($self,$args) = @_;
 
-    map { $self->_validat_list($_) } keys %$args;
-
+    return;
 }
-
 
 
 1;
