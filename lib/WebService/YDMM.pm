@@ -47,6 +47,15 @@ sub _validate_affiliate_id {
     return;
 }
 
+sub _validate_site_name {
+    my $site = shift;
+    
+    unless ($site eq "DMM.com" || $site eq "DMM.co.jp"){
+        croak('Request to Site name for "DMM.com" or "DMM.co.jp"');
+    }
+    return $site;
+}
+
 
 sub item {
     my ($self,%param) = @_;
@@ -56,13 +65,6 @@ sub item {
     do {
         delete $param{output};
     }
-
-    return;
-}
-
-
-sub _get {
-    my ($self,$args) = @_;
 
     return;
 }
@@ -80,6 +82,13 @@ WebService::YDMM - It's yet another DMM sdk.
 =head1 SYNOPSIS
 
     use WebService::YDMM;
+
+    my $dmm = WebService::YDMM->new(
+        affiliate_id => ${affiliate_id},
+        api_id       => ${api_id},
+    );
+
+    my $items = $dmm->sarch(+{});
 
 =head1 DESCRIPTION
 
