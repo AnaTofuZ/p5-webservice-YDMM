@@ -16,11 +16,8 @@ our $VERSION = "0.01";
 sub new {
     my ($class, %args) = @_;
 
-    for my $param (qw/affiliate_id api_id/){
-        unless (exists $args{$param}){
-            Carp::croak("missing mandatory parameter '$param'");
-        }
-    }
+    croak("affiliate_id is required") unless $args{affiliate_id};
+    croak("api_id is required") unless $args{api_id};
 
     my $agent = $args{agent} || "WebService::YDMM agent $VERSION";
 
@@ -40,8 +37,8 @@ sub new {
 sub _validate_affiliate_id {
     my $account = shift;
 
-    unless ($account =~ m{9[0-9]{2}$}) {
-        croak("Postfix of affiliate_id is '900--999'");
+    unless ($account =~ m{99[0-9]$}) {
+        croak("Postfix of affiliate_id is '990--999'");
     }
 
     return;
@@ -116,6 +113,10 @@ WebService::YDMM - It's yet another DMM sdk.
     );
 
     my $items = $dmm->item("DMM.com",+{ keyword => "魔法少女まどか☆マギカ"});
+
+    # or 
+
+    my $items = $dmm->item(+{ site => "DMM.R18" , keyword => "魔法少女まどか☆マギカ"});
 
 =head1 DESCRIPTION
 
