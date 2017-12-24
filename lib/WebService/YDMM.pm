@@ -60,6 +60,7 @@ sub _send_get_request {
     my ($self,$target,$query_param) = @_;
 
     map { $query_param->{$_} = $self->{$_} } qw/affiliate_id api_id/;
+    $query_param->{output} = "json";
 
     my $uri = URI->new($self->{_base_url});
     $uri->path("affiliate/v3/" . $target);
@@ -113,7 +114,7 @@ WebService::YDMM - It's yet another DMM sdk.
         api_id       => ${api_id},
     );
 
-    my $items = $dmm->sarch(+{});
+    my $items = $dmm->item("DMM.com",+{ keyword => "魔法少女まどか☆マギカ"});
 
 =head1 DESCRIPTION
 
