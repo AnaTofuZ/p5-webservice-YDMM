@@ -50,23 +50,24 @@ sub _validate_affiliate_id {
 sub _validate_site_name {
     my $site = shift;
     
-    unless ($site eq "DMM.com" || $site eq "DMM.R18"){
+    unless ($site eq 'DMM.com' || $site eq 'DMM.R18'){
         croak('Request to Site name for "DMM.com" or "DMM.R18"');
     }
     return $site;
 }
 
 sub _send_get_request {
-    my ($self,$query_param,$target) = @_;
+    my ($self,$target,$query_param) = @_;
 
     map { $query_param->{$_} = $self->{$_} } qw/affiliate_id api_id/;
 
-    my $uri = URI->new($seld->{_base_url});
+    my $uri = URI->new($self->{_base_url});
     $uri->path("affiliate/v3/" . $target);
     $uri->query_form($query_param);
 
-    my $res = $self->{agent}->request->('GET',$uri->as_string);
+    my $res = $self->{agent}->request('GET', $uri->as_string);
 
+    return $res;
 }
 
 sub item {
@@ -74,7 +75,7 @@ sub item {
 
     if ( scalar @_ == 2){
 
-        my $site =  $self->_validate_site_name(shift);
+        my $site = _validate_site_name(shift);
         my $query_param =  shift;
 
         return $self->_send_get_request("ItemList", +{ site => $site, %$query_param});
