@@ -56,6 +56,7 @@ sub _validate_site_name {
     return $site;
 }
 
+
 sub _send_get_request {
     my ($self,$target,$query_param) = @_;
 
@@ -77,8 +78,8 @@ sub item {
 
     if ( scalar @_ == 2){
 
-        my $site = _validate_site_name(shift);
-        my $query_param =  shift;
+        my $site        = _validate_site_name(shift);
+        my $query_param = shift;
 
         return $self->_send_get_request("ItemList", +{ site => $site, %$query_param});
 
@@ -86,7 +87,7 @@ sub item {
 
         my $query_param = shift;
 
-        unless (exits $query_param->{site} || $self->_validate_site_name($query_param->{site})){
+        unless (exists $query_param->{site} || $self->_validate_site_name($query_param->{site})){
             croak('Require to Sitename for "DMM.com" or "DMM.R18"');
         }
 
