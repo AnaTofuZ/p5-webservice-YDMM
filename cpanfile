@@ -10,5 +10,6 @@ on configure => sub {
 };
 
 on test => sub {
+    requires 'Test2';
     requires 'Test::More', '0.98';
 };
