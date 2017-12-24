@@ -19,14 +19,12 @@ sub new {
     croak("affiliate_id is required") unless $args{affiliate_id};
     croak("api_id is required") unless $args{api_id};
 
-    my $agent = $args{agent} || "WebService::YDMM agent $VERSION";
-
     _validate_affiliate_id($args{affiliate_id});
 
     my $self = {
         affiliate_id => $args{affiliate_id},
         api_id       => $args{api_id},
-        agent        => $args{agent} || HTTP::Tiny->new( agent => "WebService::YDMM agent $VERSION" ),
+        _agent       => HTTP::Tiny->new( agent => "WebService::YDMM agent $VERSION" ),
         _base_url    => 'https://api.dmm.com/',
     };
 
@@ -64,7 +62,7 @@ sub _send_get_request {
     $uri->path("affiliate/v3/" . $target);
     $uri->query_form($query_param);
 
-    my $res = $self->{agent}->request('GET', $uri->as_string);
+    my $res = $self->{_agent}->get( $uri->as_string);
     croak ("$target API acess failed...") unless $res->{success};
 
     return decode_json($res->{content});
@@ -123,6 +121,11 @@ WebService::YDMM - It's yet another DMM sdk.
 WebService::YDMM is another DMM webservice module.
 L<DMM|http://www.dmm.com> is Japanese shopping site.
 
+This module supported by L<DMM.API|https://affiliate.dmm.com/api/>.
+
+=head1 METHODS
+
+=head2 new
 
 
 =head1 LICENSE
@@ -131,6 +134,7 @@ Copyright (C) AnaTofuZ.
 
 DMM API Copyright 
 Powered by L<DMM.com Webサービス|https://affiliate.dmm.com/api/>
+
 Powered by L<DMM.R18 Webサービス|https://affiliate.dmm.com/api/>
 
 This library is free software; you can redistribute it and/or modify
