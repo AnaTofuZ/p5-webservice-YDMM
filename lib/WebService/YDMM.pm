@@ -56,17 +56,38 @@ sub _validate_site_name {
     return $site;
 }
 
+sub _send_get_request {
+    my ($self,$query_param,$target) = @_;
+
+    map { $query_param->{$_} = $self->{$_} } qw/affiliate_id api_id/;
+
+    my $uri = URI->new($seld->{_base_url});
+    $uri->path("affiliate/v3/" . $target);
+    $uri->query_form($query_param);
+
+}
 
 sub item {
-    my ($self,%param) = @_;
+    my $self = shift;
 
-    my @validates = $self->_validate_list("item");
+    if ( scalar @_ == 2){
 
-    do {
-        delete $param{output};
+        my $site =  $self->_validate_site_name(shift);
+        my $query_param =  shift;
+
+        return $self->_send_get_request("ItemList", +{ site => $site, %$query_param});
+
+    } else {
+
+        my $query_param = shift;
+
+        unless (exits $query_param->{site} || $self->_validate_site_name($query_param->{site})){
+            croak('Require to Sitename for "DMM.com" or "DMM.co.jp"');
+        }
+
+        return $self->_send_get_request("ItemList", $query_param);
     }
 
-    return;
 }
 
 
@@ -104,8 +125,14 @@ Copyright (C) AnaTofuZ.
 
 Origin WebService::DMM (C) syohex
 
+
+DMM API Copyright 
+Powered by <a href="https://affiliate.dmm.com/api/">DMM.com Webサービス</a>
+Powered by <a href="https://affiliate.dmm.com/api/">DMM.R18 Webサービス</a>
+
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.
+
 
 =head1 AUTHOR
 
