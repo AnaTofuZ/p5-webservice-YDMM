@@ -66,8 +66,9 @@ sub _send_get_request {
     $uri->query_form($query_param);
 
     my $res = $self->{agent}->request('GET', $uri->as_string);
+    croak ("$target API acess failed...") unless $res->{success};
 
-    return $res;
+    return decode_json($res->{content});
 }
 
 sub item {
