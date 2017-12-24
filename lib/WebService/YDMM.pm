@@ -30,7 +30,7 @@ sub new {
         affiliate_id => $args{affiliate_id},
         api_id       => $args{api_id},
         agent        => $args{agent} || HTTP::Tiny->new( agent => "WebService::YDMM agent $VERSION" ),
-        _base_url    => 'https://api.dmm.com/affiliate/v3',
+        _base_url    => 'https://api.dmm.com/',
     };
 
     return bless $self, $class;
@@ -50,8 +50,8 @@ sub _validate_affiliate_id {
 sub _validate_site_name {
     my $site = shift;
     
-    unless ($site eq "DMM.com" || $site eq "DMM.co.jp"){
-        croak('Request to Site name for "DMM.com" or "DMM.co.jp"');
+    unless ($site eq "DMM.com" || $site eq "DMM.R18"){
+        croak('Request to Site name for "DMM.com" or "DMM.R18"');
     }
     return $site;
 }
@@ -64,6 +64,8 @@ sub _send_get_request {
     my $uri = URI->new($seld->{_base_url});
     $uri->path("affiliate/v3/" . $target);
     $uri->query_form($query_param);
+
+    my $res = $self->{agent}->request->('GET',$uri->as_string);
 
 }
 
@@ -82,7 +84,7 @@ sub item {
         my $query_param = shift;
 
         unless (exits $query_param->{site} || $self->_validate_site_name($query_param->{site})){
-            croak('Require to Sitename for "DMM.com" or "DMM.co.jp"');
+            croak('Require to Sitename for "DMM.com" or "DMM.R18"');
         }
 
         return $self->_send_get_request("ItemList", $query_param);
