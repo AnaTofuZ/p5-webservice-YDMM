@@ -119,8 +119,7 @@ WebService::YDMM - It's yet another DMM sdk.
 =head1 DESCRIPTION
 
 WebService::YDMM is another DMM webservice module.
-DMML<http://www.dmm.com> is Japanese shopping site.
-
+L<DMM|http://www.dmm.com> is Japanese shopping site.
 
 
 
@@ -128,12 +127,9 @@ DMML<http://www.dmm.com> is Japanese shopping site.
 
 Copyright (C) AnaTofuZ.
 
-Origin WebService::DMM (C) syohex
-
-
 DMM API Copyright 
-Powered by <a href="https://affiliate.dmm.com/api/">DMM.com Webサービス</a>
-Powered by <a href="https://affiliate.dmm.com/api/">DMM.R18 Webサービス</a>
+Powered by L<DMM.com Webサービス|https://affiliate.dmm.com/api/>
+Powered by L<DMM.R18 Webサービス|https://affiliate.dmm.com/api/>
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.
