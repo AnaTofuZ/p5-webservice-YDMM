@@ -53,7 +53,7 @@ sub _validate_site_name {
 
 
 sub _send_get_request {
-    my ($self,$target,$query_param) = @_;
+    my ($self, $target, $query_param) = @_;
 
     map { $query_param->{$_} = $self->{$_} } qw/affiliate_id api_id/;
     $query_param->{output} = "json";
@@ -62,7 +62,7 @@ sub _send_get_request {
     $uri->path("affiliate/v3/" . $target);
     $uri->query_form($query_param);
 
-    my $res = $self->{_agent}->get( $uri->as_string);
+    my $res = $self->{_agent}->get($uri->as_string);
     croak ("$target API acess failed...") unless $res->{success};
 
     return decode_json($res->{content});
@@ -71,7 +71,7 @@ sub _send_get_request {
 sub item {
     my $self = shift;
 
-    if ( scalar @_ == 2){
+    if (scalar @_ == 2){
 
         my $site        = _validate_site_name(shift);
         my $query_param = shift;
