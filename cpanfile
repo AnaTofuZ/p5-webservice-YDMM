@@ -1,4 +1,4 @@
-requires 'Encode';
+requires 'Furl';
 requires 'HTTP::Tiny';
 requires 'IO::Socket::SSL';
 requires 'JSON';
@@ -10,6 +10,6 @@ on configure => sub {
 };
 
 on test => sub {
-    requires 'Test2';
+    requires 'Test2::V0';
     requires 'Test::More', '0.98';
 };
