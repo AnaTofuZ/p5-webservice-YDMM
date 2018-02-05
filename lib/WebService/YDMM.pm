@@ -81,7 +81,9 @@ sub item {
 
         my $query_param = shift;
 
-        unless (exists $query_param->{site} || $self->_validate_site_name($query_param->{site})){
+        if (exists $query_param->{site}){
+            _validate_site_name($query_param->{site});
+        } else {
             croak('Require to Sitename for "DMM.com" or "DMM.R18"');
         }
 
