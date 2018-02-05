@@ -4,7 +4,7 @@
       "AnaTofuZ <anatofuz@gmail.com>"
    ],
    "dynamic_config" : 0,
-   "generated_by" : "Minilla/v3.0.13, CPAN::Meta::Converter version 2.150005",
+   "generated_by" : "Minilla/v3.0.14, CPAN::Meta::Converter version 2.150005",
    "license" : [
       "perl_5"
    ],
@@ -42,11 +42,17 @@
       },
       "runtime" : {
          "requires" : {
+            "Furl" : "0",
+            "HTTP::Tiny" : "0",
+            "IO::Socket::SSL" : "0",
+            "JSON" : "0",
+            "URI" : "0",
             "perl" : "5.008001"
          }
       },
       "test" : {
          "requires" : {
+            "Test2::V0" : "0",
             "Test::More" : "0.98"
          }
       }

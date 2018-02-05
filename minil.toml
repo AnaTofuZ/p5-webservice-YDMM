@@ -1,5 +1,5 @@
 name = "WebService-YDMM"
-# badges = ["travis"]
+badges = ["travis" , "metacpan"]
 authority="cpan:ANATOFUZ"
 
 module_maker="ModuleBuildTiny"
