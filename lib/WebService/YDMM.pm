@@ -7,7 +7,6 @@ use utf8;
 use Carp qw/croak/;
 use URI;
 use HTTP::Tiny;
-use Encode;
 use JSON;
 
 our $VERSION = "0.01";
@@ -63,7 +62,7 @@ sub _send_get_request {
     $uri->query_form($query_param);
 
     my $res = $self->{_agent}->get($uri->as_string);
-    croak ("$target API acess failed...") unless $res->{success};
+    croak("$target API acess failed...") unless $res->{success};
 
     return decode_json($res->{content});
 }
@@ -76,7 +75,7 @@ sub item {
         my $site        = _validate_site_name(shift);
         my $query_param = shift;
 
-        return $self->_send_get_request("ItemList", +{ site => $site, %$query_param});
+        return $self->_send_get_request("ItemList", +{ site => $site, %$query_param})->{result}->{items};
 
     } else {
 
@@ -86,7 +85,7 @@ sub item {
             croak('Require to Sitename for "DMM.com" or "DMM.R18"');
         }
 
-        return $self->_send_get_request("ItemList", $query_param);
+        return $self->_send_get_request("ItemList", +{ %$query_param })->{result}->{items};
     }
 
 }
@@ -125,8 +124,28 @@ This module supported by L<DMM.API|https://affiliate.dmm.com/api/>.
 
 =head1 METHODS
 
-=head2 new
+=head2 new(%params)
+ 
+Create instance of WebService::Reactio.
+ 
+I<%params> must have following parameter:
+ 
+=over 4
 
+=item api_id
+ 
+API ID of DMM.com web service
+You can get API key on project application for DMM affiliate service.
+ 
+=item affiliate_id
+ 
+Affiliate ID of DMM.com web service
+You can get API key on project application for DMM affiliate service.
+This affiliate_id validate of 990 ~ 999 number.
+
+=back
+
+=head2 item([$site],\%params)
 
 =head1 LICENSE
 

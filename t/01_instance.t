@@ -16,11 +16,12 @@ subtest 'new -- make_instance' =>  sub {
             like( dies {WebService::YDMM->new( affiliate_id=> "Test_id-990")}, qr{api_id is required}, 'api_id not input');
         };
 
-        subtest 'invalid'  => sub {
-            like( dies {WebService::YDMM->new(affiliate_id => "Test_id-99", api_id => "Test-affiliate")}, qr{Postfix of affiliate_id is '990--999'},q{ not_three_digit });
-            like( dies {WebService::YDMM->new(affiliate_id => "Test_id-989", api_id => "Test-affiliate")},qr{Postfix of affiliate_id is '990--999'},q{ not_990's});
-            like( dies {WebService::YDMM->new(affiliate_id => "Test_id-1000", api_id => "Test-affiliate")},qr{Postfix of affiliate_id is '990--999'},q{ over 999});
-            like( dies {WebService::YDMM->new(affiliate_id => "Test_id-990.5", api_id => "Test-affiliate")},qr{Postfix of affiliate_id is '990--999'},q{ froat number});
+        subtest 'invalid'   => sub {
+            my $cases = { not_three_digit => 99, 'not_990-999' => 989, over_999 => 1000, froat_number => 990.5 };
+
+            for my $case (keys %$cases){
+                like( dies {WebService::YDMM->new(affiliate_id => "Test_id-$cases->{$case}", api_id => "Test-affiliate")}, qr{Postfix of affiliate_id is '990--999'},qw{ $case });
+            }
         };
     };
 
