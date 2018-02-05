@@ -33,7 +33,7 @@ subtest 'item' => sub {
 
         subtest 'out_site_name' => sub {
             for my $site (@sites) {
-                ok (my $receive = $dmm->item( $site , { site => $site , name => "test"}), q{get_item_out});
+                ok (my $receive = $dmm->item( $site , {  name => "test"}), q{get_item_out});
                 is ($receive->[0]->{floor_name},"コミック");
                 is ($receive->[0]->{iteminfo}->{author}->[1]->{name},"ハノカゲ");
             } 
@@ -57,13 +57,13 @@ subtest 'item' => sub {
 
         subtest 'invalid site name' => sub {
             for my $damy_sites (qw/ DLL.com DLL.R18/){
-                like( dies { $dmm->item(+{ site => $damy_sites, name => "test" })}, qr{Request to Site name for "DMM.com" or "DMM.R18"},qr{ damy_$damy_sites });
+                like( dies { $dmm->item(+{ site => $damy_sites, name => "test" })}, qr{Request to Site name for "DMM.com" or "DMM.R18"},"damy_$damy_sites");
             }
         };
 
         subtest 'API acess failed' => sub {
-            for my $site (@sites){
-                like ( dies { $dmm->item(+{ site => $site, name => "name"})}, qr{ItemList API acess failed...},qw{$site Item acess});
+            for my $site (@sites) {
+                like ( dies { $dmm->item(+{ site => $site, name => "name"}) }, qr{ItemList API acess failed...},"$site Item acess");
             }
         };
     };
