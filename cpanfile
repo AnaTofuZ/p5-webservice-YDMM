@@ -1,4 +1,3 @@
-requires 'Furl';
 requires 'HTTP::Tiny';
 requires 'IO::Socket::SSL';
 requires 'JSON';

@@ -42,7 +42,6 @@
       },
       "runtime" : {
          "requires" : {
-            "Furl" : "0",
             "HTTP::Tiny" : "0",
             "IO::Socket::SSL" : "0",
             "JSON" : "0",
