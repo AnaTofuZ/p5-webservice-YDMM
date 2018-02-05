@@ -6,7 +6,7 @@ use WebService::YDMM;
 
 my $dmm = WebService::YDMM->new(affiliate_id => "Test_id-990", api_id => "Test-affiliate");
 
-my @sites = qw/ DMM.com DMM.R18/;
+my @sites = qw/DMM.com DMM.R18/;
 
 subtest 'item' => sub {
 
@@ -25,7 +25,7 @@ subtest 'item' => sub {
 
         subtest 'in_site_name' => sub {
             for my $site (@sites) {
-                ok(my $receive = $dmm->item(+{ site => $site , name => "test"}));
+                ok(my $receive = $dmm->item(+{ site => $site , name => "test"}), q{in_site_name});
                 is ($receive->[0]->{floor_name},"コミック");
                 is ($receive->[0]->{iteminfo}->{author}->[1]->{name},"ハノカゲ");
             }
@@ -43,8 +43,30 @@ subtest 'item' => sub {
 
     subtest 'error' => sub {
 
-    };
+        my $mock = mock 'HTTP::Tiny'  => (
+            override => [
+                get => sub { 
+                            return {success => undef, content => undef };
+                        }
+            ],
+        );
 
+        subtest 'nothing site name' => sub {
+            like( dies { $dmm->item(+{ name => "test" })}, qr{Require to Sitename for "DMM.com" or "DMM.R18"},q{ nothing_in});
+        };
+
+        subtest 'invalid site name' => sub {
+            for my $damy_sites (qw/ DLL.com DLL.R18/){
+                like( dies { $dmm->item(+{ site => $damy_sites, name => "test" })}, qr{Request to Site name for "DMM.com" or "DMM.R18"},qr{ damy_$damy_sites });
+            }
+        };
+
+        subtest 'API acess failed' => sub {
+            for my $site (@sites){
+                like ( dies { $dmm->item(+{ site => $site, name => "name"})}, qr{ItemList API acess failed...},qw{$site Item acess});
+            }
+        };
+    };
 };
 
 done_testing;
