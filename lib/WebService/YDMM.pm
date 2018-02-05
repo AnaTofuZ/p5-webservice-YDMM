@@ -7,7 +7,6 @@ use utf8;
 use Carp qw/croak/;
 use URI;
 use HTTP::Tiny;
-use Encode;
 use JSON;
 
 our $VERSION = "0.01";
@@ -16,48 +15,82 @@ our $VERSION = "0.01";
 sub new {
     my ($class, %args) = @_;
 
-    for my $param (qw/affiliate_id api_id/){
-        unless (exists $args{$param}){
-            Carp::croak("missing mandatory parameter '$param'");
-        }
-    }
+    croak("affiliate_id is required") unless $args{affiliate_id};
+    croak("api_id is required") unless $args{api_id};
 
     _validate_affiliate_id($args{affiliate_id});
 
     my $self = {
         affiliate_id => $args{affiliate_id},
         api_id       => $args{api_id},
-        _base_url    => 'https://api.dmm.com/affiliate/v3',
-        agent        => $args{agent} || HTTP::Tiny->new( agent => "WebService::YDMM agent $VERSION" ),
+        _agent       => HTTP::Tiny->new( agent => "WebService::YDMM agent $VERSION" ),
+        _base_url    => 'https://api.dmm.com/',
     };
 
     return bless $self, $class;
 }
 
-sub _validat_list {
-    my ($self, $param) = @_;
-
-    return ;
-}
 
 sub _validate_affiliate_id {
     my $account = shift;
 
-    unless ($account =~ m{9[0-9]{2}$}) {
-        Carp::croak("Postfix of affiliate_id is '900--999'");
+    unless ($account =~ m{99[0-9]$}) {
+        croak("Postfix of affiliate_id is '990--999'");
     }
 
-    return 1;
+    return;
+}
+
+sub _validate_site_name {
+    my $site = shift;
+    
+    unless ($site eq 'DMM.com' || $site eq 'DMM.R18'){
+        croak('Request to Site name for "DMM.com" or "DMM.R18"');
+    }
+    return $site;
 }
 
 
-sub author {
-    my ($self,$args) = @_;
+sub _send_get_request {
+    my ($self, $target, $query_param) = @_;
 
-    map { $self->_validat_list($_) } keys %$args;
+    map { $query_param->{$_} = $self->{$_} } qw/affiliate_id api_id/;
+    $query_param->{output} = "json";
 
+    my $uri = URI->new($self->{_base_url});
+    $uri->path("affiliate/v3/" . $target);
+    $uri->query_form($query_param);
+
+    my $res = $self->{_agent}->get($uri->as_string);
+    croak("$target API acess failed...") unless $res->{success};
+
+    return decode_json($res->{content});
 }
 
+sub item {
+    my $self = shift;
+
+    if (scalar @_ == 2){
+
+        my $site        = _validate_site_name(shift);
+        my $query_param = shift;
+
+        return $self->_send_get_request("ItemList", +{ site => $site, %$query_param})->{result}->{items};
+
+    } else {
+
+        my $query_param = shift;
+
+        if (exists $query_param->{site}){
+            _validate_site_name($query_param->{site});
+        } else {
+            croak('Require to Sitename for "DMM.com" or "DMM.R18"');
+        }
+
+        return $self->_send_get_request("ItemList", +{ %$query_param })->{result}->{items};
+    }
+
+}
 
 
 1;
@@ -73,22 +106,61 @@ WebService::YDMM - It's yet another DMM sdk.
 
     use WebService::YDMM;
 
+    my $dmm = WebService::YDMM->new(
+        affiliate_id => ${affiliate_id},
+        api_id       => ${api_id},
+    );
+
+    my $items = $dmm->item("DMM.com",+{ keyword => "魔法少女まどか☆マギカ"});
+
+    # or 
+
+    my $items = $dmm->item(+{ site => "DMM.R18" , keyword => "魔法少女まどか☆マギカ"});
+
 =head1 DESCRIPTION
 
 WebService::YDMM is another DMM webservice module.
-DMML<http://www.dmm.com> is Japanese shopping site.
+L<DMM|http://www.dmm.com> is Japanese shopping site.
 
+This module supported by L<DMM.API|https://affiliate.dmm.com/api/>.
 
+=head1 METHODS
 
+=head2 new(%params)
+ 
+Create instance of WebService::Reactio.
+ 
+I<%params> must have following parameter:
+ 
+=over 4
+
+=item api_id
+ 
+API ID of DMM.com web service
+You can get API key on project application for DMM affiliate service.
+ 
+=item affiliate_id
+ 
+Affiliate ID of DMM.com web service
+You can get API key on project application for DMM affiliate service.
+This affiliate_id validate of 990 ~ 999 number.
+
+=back
+
+=head2 item([$site],\%params)
 
 =head1 LICENSE
 
 Copyright (C) AnaTofuZ.
 
-Origin WebService::DMM (C) syohex
+DMM API Copyright 
+Powered by L<DMM.com Webサービス|https://affiliate.dmm.com/api/>
+
+Powered by L<DMM.R18 Webサービス|https://affiliate.dmm.com/api/>
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.
+
 
 =head1 AUTHOR
 
