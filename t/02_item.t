@@ -26,16 +26,16 @@ subtest 'item' => sub {
         subtest 'in_site_name' => sub {
             for my $site (@sites) {
                 ok(my $receive = $dmm->item(+{ site => $site , name => "test"}), q{in_site_name});
-                is ($receive->[0]->{floor_name},"コミック");
-                is ($receive->[0]->{iteminfo}->{author}->[1]->{name},"ハノカゲ");
+                is ($receive->{items}->[0]->{floor_name},"コミック");
+                is ($receive->{items}->[0]->{iteminfo}->{author}->[1]->{name},"ハノカゲ");
             }
         };
 
         subtest 'out_site_name' => sub {
             for my $site (@sites) {
                 ok (my $receive = $dmm->item( $site , {  name => "test"}), q{get_item_out});
-                is ($receive->[0]->{floor_name},"コミック");
-                is ($receive->[0]->{iteminfo}->{author}->[1]->{name},"ハノカゲ");
+                is ($receive->{items}->[0]->{floor_name},"コミック");
+                is ($receive->{items}->[0]->{iteminfo}->{author}->[1]->{name},"ハノカゲ");
             } 
         };
 
