@@ -15,7 +15,7 @@ subtest 'item' => sub {
         my $mock = mock 'HTTP::Tiny'  => (
             override => [
                 get => sub { 
-                            open my $fh, '<', "$FindBin::Bin/data/test.json" or die "failed to open file: $!";
+                            open my $fh, '<', "$FindBin::Bin/data/item.json" or die "failed to open file: $!";
                             my $content = do { local $/; <$fh> };
                             return {success => 'true', content => "$content"};
                         }

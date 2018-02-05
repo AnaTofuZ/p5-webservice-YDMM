@@ -99,16 +99,22 @@ sub author {
     if (scalar @_ == 2){
 
         (my $floor_id,$query_param) = @_;
+
+        if (! (defined $floor_id)) {
+            croak('Require to floor_id');
+        }
         $query_param->{floor_id} = $floor_id;
 
     } else {
-        $query_param = shift;
-       unless (exists $query_param->{floor_id}){
+
+       $query_param = shift;
+       if  (! (exists $query_param->{floor_id}) ){
           croak('Require to floor_id');
        }
+
     }
 
-    return $self->_send_get_request("AuthorSearch", +{ %$query_param })->{result}->{items};
+    return $self->_send_get_request("AuthorSearch", +{ %$query_param })->{result};
 
 }
 
