@@ -118,6 +118,11 @@ sub author {
 
 }
 
+sub actress {
+    my($self,$query_param) = @_;
+    return $self->_send_get_request("ActressSearch", +{ %$query_param })->{result};
+}
+
 1;
 __END__
 
