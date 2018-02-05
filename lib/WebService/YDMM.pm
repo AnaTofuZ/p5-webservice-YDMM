@@ -75,7 +75,7 @@ sub item {
         my $site        = _validate_site_name(shift);
         my $query_param = shift;
 
-        return $self->_send_get_request("ItemList", +{ site => $site, %$query_param})->{result}->{items};
+        return $self->_send_get_request("ItemList", +{ site => $site, %$query_param})->{result};
 
     } else {
 
@@ -87,11 +87,36 @@ sub item {
             croak('Require to Sitename for "DMM.com" or "DMM.R18"');
         }
 
-        return $self->_send_get_request("ItemList", +{ %$query_param })->{result}->{items};
+        return $self->_send_get_request("ItemList", +{ %$query_param })->{result};
     }
-
 }
 
+sub author {
+    my $self  = shift;
+
+    my $query_param;
+
+    if (scalar @_ == 2){
+
+        (my $floor_id,$query_param) = @_;
+
+        if (! (defined $floor_id)) {
+            croak('Require to floor_id');
+        }
+        $query_param->{floor_id} = $floor_id;
+
+    } else {
+
+       $query_param = shift;
+       if  (! (exists $query_param->{floor_id}) ){
+          croak('Require to floor_id');
+       }
+
+    }
+
+    return $self->_send_get_request("AuthorSearch", +{ %$query_param })->{result};
+
+}
 
 1;
 __END__
