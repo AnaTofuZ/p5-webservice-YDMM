@@ -12,11 +12,14 @@ WebService::YDMM - It's yet another DMM sdk.
         api_id       => ${api_id},
     );
 
-    my $items = $dmm->item("DMM.com",+{ keyword => "魔法少女まどか☆マギカ"});
+    my $items = $dmm->item("DMM.com",+{ keyword => "魔法少女まどか☆マギカ"})->{items};
 
     # or 
 
     my $items = $dmm->item(+{ site => "DMM.R18" , keyword => "魔法少女まどか☆マギカ"});
+
+    say $items->[0]->{floor_name}   # "コミック"
+    say $items->[0]->{iteminfo}->{author}->[1]->{name}  #"ハノカゲ"
 
 # DESCRIPTION
 
@@ -45,6 +48,63 @@ _%params_ must have following parameter:
     This affiliate\_id validate of 990 ~ 999 number.
 
 ## item(\[$site\],\\%params)
+
+You can get item list for DMM.com
+
+- $site \[MUST\]
+
+    You must use either "DMM.com" or DMM.R18" for item param.
+    Item param can  insert \\%params .
+
+## floor()
+
+You  can get floor list.
+This methods no requires parameters.
+
+## actress(\\%params)
+
+You can get actres information from DMM.
+
+## genre(\[$floor\_id\],\\%params)
+
+You can get genre information.
+
+- $floor\_id \[MUST\] 
+
+    This method  must $floor\_id from floor list.
+    Floor\_id param can  insert \\%params .
+
+## maker(\[$floor\_id\],\\%params)
+
+You can get maker information.
+
+- $floor\_id \[MUST\] 
+
+    This method  must $floor\_id from floor list.
+    Floor\_id param can  insert \\%params .
+
+## series(\[$floor\_id\],\\%params)
+
+You can get series information.
+
+- $floor\_id \[MUST\] 
+
+    This method  must $floor\_id from floor list.
+    Floor\_id param can  insert \\%params .
+
+## author(\[$floor\_id\],\\%params)
+
+You can get author information.
+
+- $floor\_id \[MUST\] 
+
+    This method  must $floor\_id from floor list.
+    Floor\_id param can  insert \\%params .
+
+### \\%params
+
+%params has officional query parameter.
+Please check as appropriate for officional api support page from DMM.
 
 # LICENSE
 

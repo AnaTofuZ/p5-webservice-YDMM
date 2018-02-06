@@ -136,6 +136,29 @@ sub floor {
     return $self->_send_get_request("FloorList", +{})->{result};
 }
 
+sub actress {
+    my($self,$query_param) = @_;
+    return $self->_send_get_request("ActressSearch", +{ %$query_param })->{result};
+}
+
+sub genre {
+    my $self  = shift;
+    my $query_param = _suggestion_floor_param(@_);
+    return $self->_send_get_request("GenreSearch", +{ %$query_param })->{result};
+}
+
+sub maker {
+    my $self  = shift;
+    my $query_param = _suggestion_floor_param(@_);
+    return $self->_send_get_request("MakerSearch", +{ %$query_param })->{result};
+}
+
+sub series {
+    my $self  = shift;
+    my $query_param = _suggestion_floor_param(@_);
+    return $self->_send_get_request("SeriesSearch", +{ %$query_param })->{result};
+}
+
 sub author {
     my $self  = shift;
     my $query_param = _suggestion_floor_param(@_);
@@ -143,10 +166,6 @@ sub author {
 }
 
 
-sub actress {
-    my($self,$query_param) = @_;
-    return $self->_send_get_request("ActressSearch", +{ %$query_param })->{result};
-}
 
 1;
 __END__
@@ -166,11 +185,14 @@ WebService::YDMM - It's yet another DMM sdk.
         api_id       => ${api_id},
     );
 
-    my $items = $dmm->item("DMM.com",+{ keyword => "魔法少女まどか☆マギカ"});
+    my $items = $dmm->item("DMM.com",+{ keyword => "魔法少女まどか☆マギカ"})->{items};
 
     # or 
 
     my $items = $dmm->item(+{ site => "DMM.R18" , keyword => "魔法少女まどか☆マギカ"});
+
+    say $items->[0]->{floor_name}   # "コミック"
+    say $items->[0]->{iteminfo}->{author}->[1]->{name}  #"ハノカゲ"
 
 =head1 DESCRIPTION
 
@@ -203,6 +225,83 @@ This affiliate_id validate of 990 ~ 999 number.
 =back
 
 =head2 item([$site],\%params)
+
+You can get item list for DMM.com
+
+=over 4
+
+=item $site [MUST]
+
+You must use either "DMM.com" or DMM.R18" for item param.
+Item param can  insert \%params .
+
+=back
+
+=head2 floor()
+
+You  can get floor list.
+This methods no requires parameters.
+
+=head2 actress(\%params)
+
+You can get actres information from DMM.
+
+=head2 genre([$floor_id],\%params)
+
+You can get genre information.
+
+=over 4
+
+=item $floor_id [MUST] 
+
+This method  must $floor_id from floor list.
+Floor_id param can  insert \%params .
+
+=back
+
+=head2 maker([$floor_id],\%params)
+
+You can get maker information.
+
+=over 4
+
+=item $floor_id [MUST] 
+
+This method  must $floor_id from floor list.
+Floor_id param can  insert \%params .
+
+=back
+
+=head2 series([$floor_id],\%params)
+
+You can get series information.
+
+=over 4
+
+=item $floor_id [MUST] 
+
+This method  must $floor_id from floor list.
+Floor_id param can  insert \%params .
+
+=back
+
+=head2 author([$floor_id],\%params)
+
+You can get author information.
+
+=over 4
+
+=item $floor_id [MUST] 
+
+This method  must $floor_id from floor list.
+Floor_id param can  insert \%params .
+
+=back
+
+=head3 \%params
+
+%params has officional query parameter.
+Please check as appropriate for officional api support page from DMM.
 
 =head1 LICENSE
 

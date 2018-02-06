@@ -1,7 +1,7 @@
 {
    "abstract" : "It's yet another DMM sdk.",
    "author" : [
-      "AnaTofuZ <anatofuz@gmail.com>"
+      "([$floor_id],\\%params)"
    ],
    "dynamic_config" : 0,
    "generated_by" : "Minilla/v3.0.14, CPAN::Meta::Converter version 2.150005",
@@ -70,5 +70,8 @@
    },
    "version" : "0.01",
    "x_authority" : "cpan:ANATOFUZ",
+   "x_contributors" : [
+      "AnaTofuZ <anatofuz@gmail.com>"
+   ],
    "x_serialization_backend" : "JSON::PP version 2.27300"
 }
