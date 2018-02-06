@@ -93,30 +93,40 @@ sub item {
 
 sub author {
     my $self  = shift;
-
-    my $query_param;
-
-    if (scalar @_ == 2){
-
-        (my $floor_id,$query_param) = @_;
-
-        if (! (defined $floor_id)) {
-            croak('Require to floor_id');
-        }
-        $query_param->{floor_id} = $floor_id;
-
-    } else {
-
-       $query_param = shift;
-       if  (! (exists $query_param->{floor_id}) ){
-          croak('Require to floor_id');
-       }
-
-    }
-
+    my $query_param = _suggestion_floor_param(@_);
     return $self->_send_get_request("AuthorSearch", +{ %$query_param })->{result};
-
 }
+
+sub _suggestion_floor_param {
+
+    if ( scalar @_ == 2 ){
+        return _set_floor_param(@_);
+    } else {
+        return _check_exists_floor_param(@_);
+    }
+}
+
+
+sub _set_floor_param {
+    my ($floor_id,$query_param) = @_;
+
+    if (! (defined $floor_id)) {
+        croak('Require to floor_id');
+    }
+    $query_param->{floor_id} = $floor_id;
+
+    return $query_param;
+}
+
+sub _check_exists_floor_param {
+    my $query_param = shift;
+    if  (! (exists $query_param->{floor_id}) ){
+        croak('Require to floor_id');
+    }
+    return $query_param;
+}
+
+
 
 sub actress {
     my($self,$query_param) = @_;
