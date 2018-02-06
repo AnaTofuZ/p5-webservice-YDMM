@@ -136,6 +136,29 @@ sub floor {
     return $self->_send_get_request("FloorList", +{})->{result};
 }
 
+sub actress {
+    my($self,$query_param) = @_;
+    return $self->_send_get_request("ActressSearch", +{ %$query_param })->{result};
+}
+
+sub genre {
+    my $self  = shift;
+    my $query_param = _suggestion_floor_param(@_);
+    return $self->_send_get_request("GenreSearch", +{ %$query_param })->{result};
+}
+
+sub maker {
+    my $self  = shift;
+    my $query_param = _suggestion_floor_param(@_);
+    return $self->_send_get_request("MakerSearch", +{ %$query_param })->{result};
+}
+
+sub series {
+    my $self  = shift;
+    my $query_param = _suggestion_floor_param(@_);
+    return $self->_send_get_request("SeriesSearch", +{ %$query_param })->{result};
+}
+
 sub author {
     my $self  = shift;
     my $query_param = _suggestion_floor_param(@_);
@@ -143,10 +166,6 @@ sub author {
 }
 
 
-sub actress {
-    my($self,$query_param) = @_;
-    return $self->_send_get_request("ActressSearch", +{ %$query_param })->{result};
-}
 
 1;
 __END__
