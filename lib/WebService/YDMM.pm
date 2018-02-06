@@ -9,7 +9,7 @@ use URI;
 use HTTP::Tiny;
 use JSON;
 
-our $VERSION = "0.01";
+our $VERSION = "0.02";
 
 
 sub new {
@@ -205,7 +205,7 @@ This module supported by L<DMM.API|https://affiliate.dmm.com/api/>.
 
 =head2 new(%params)
  
-Create instance of WebService::Reactio.
+Create instance of WebService::YDMM
  
 I<%params> must have following parameter:
  

@@ -68,7 +68,7 @@
          "web" : "https://github.com/AnaTofuZ/p5-webservice-YDMM"
       }
    },
-   "version" : "0.01",
+   "version" : "0.02",
    "x_authority" : "cpan:ANATOFUZ",
    "x_contributors" : [
       "AnaTofuZ <anatofuz@gmail.com>"

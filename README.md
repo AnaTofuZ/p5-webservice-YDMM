@@ -32,7 +32,7 @@ This module supported by [DMM.API](https://affiliate.dmm.com/api/).
 
 ## new(%params)
 
-Create instance of WebService::Reactio.
+Create instance of WebService::YDMM
 
 _%params_ must have following parameter:
 
