@@ -67,35 +67,34 @@ sub _send_get_request {
     return decode_json($res->{content});
 }
 
-sub item {
-    my $self = shift;
 
-    if (scalar @_ == 2){
-
-        my $site        = _validate_site_name(shift);
-        my $query_param = shift;
-
-        return $self->_send_get_request("ItemList", +{ site => $site, %$query_param})->{result};
-
+sub _suggestion_site_param {
+    if ( scalar @_ == 2){
+        return _set_site_param(@_);
     } else {
-
-        my $query_param = shift;
-
-        if (exists $query_param->{site}){
-            _validate_site_name($query_param->{site});
-        } else {
-            croak('Require to Sitename for "DMM.com" or "DMM.R18"');
-        }
-
-        return $self->_send_get_request("ItemList", +{ %$query_param })->{result};
+        return _check_exists_site_param(@_);
     }
 }
 
-sub author {
-    my $self  = shift;
-    my $query_param = _suggestion_floor_param(@_);
-    return $self->_send_get_request("AuthorSearch", +{ %$query_param })->{result};
+sub _set_site_param {
+    my $site        = _validate_site_name(shift);
+    my $query_param = shift;
+    $query_param->{site} = $site;
+    return $query_param;
 }
+
+sub _check_exists_site_param {
+    my $query_param = shift;
+
+    if (exists $query_param->{site}){
+        _validate_site_name($query_param->{site});
+    } else {
+        croak('Require to Sitename for "DMM.com" or "DMM.R18"');
+    }
+
+    return $query_param;
+}
+
 
 sub _suggestion_floor_param {
 
@@ -126,6 +125,18 @@ sub _check_exists_floor_param {
     return $query_param;
 }
 
+sub item {
+    my $self = shift;
+    my $query_param = _suggestion_site_param(@_);
+
+    return $self->_send_get_request("ItemList", +{ %$query_param })->{result};
+}
+
+sub author {
+    my $self  = shift;
+    my $query_param = _suggestion_floor_param(@_);
+    return $self->_send_get_request("AuthorSearch", +{ %$query_param })->{result};
+}
 
 
 sub actress {
