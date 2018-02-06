@@ -128,8 +128,12 @@ sub _check_exists_floor_param {
 sub item {
     my $self = shift;
     my $query_param = _suggestion_site_param(@_);
-
     return $self->_send_get_request("ItemList", +{ %$query_param })->{result};
+}
+
+sub floor {
+    my $self = shift;
+    return $self->_send_get_request("FloorList", +{})->{result};
 }
 
 sub author {
