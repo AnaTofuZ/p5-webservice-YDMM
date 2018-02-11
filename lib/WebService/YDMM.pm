@@ -244,7 +244,7 @@ This methods no requires parameters.
 
 =head2 actress(\%params)
 
-You can get actres information from DMM.
+You can get actress information from DMM.
 
 =head2 genre([$floor_id],\%params)
 
