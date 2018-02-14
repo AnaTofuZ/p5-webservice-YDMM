@@ -9,7 +9,7 @@ use URI;
 use HTTP::Tiny;
 use JSON;
 
-our $VERSION = "0.02";
+our $VERSION = "0.03";
 
 
 sub new {

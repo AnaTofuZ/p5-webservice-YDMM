@@ -2,6 +2,9 @@ Revision history for Perl extension WebService-YDMM
 
 {{$NEXT}}
 
+0.03 2018-02-14T04:45:51Z
+    - fix typo
+
 0.02 2018-02-06T02:12:24Z
     - edit README.md
 
